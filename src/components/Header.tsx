@@ -117,7 +117,7 @@ function Header() {
     setSearchOpen((prev) => !prev);
   };
   useEffect(() => {
-    scrollY.onChange(() => {
+    scrollY.on("change", () => {
       if (scrollY.get() > 40) {
         navAnimation.start("scroll");
       } else {

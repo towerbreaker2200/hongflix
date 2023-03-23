@@ -1,15 +1,18 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 import { RouterProvider } from "react-router-dom";
-
+import { QueryClientProvider, QueryClient } from "react-query";
 import { createGlobalStyle } from "styled-components";
 import router from "./Router";
 
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -39,9 +42,6 @@ footer, header, hgroup, main, menu, nav, section {
 *[hidden] {
     display: none;
 }
-body {
-  line-height: 1;
-}
 menu, ol, ul {
   list-style: none;
 }
@@ -62,8 +62,8 @@ table {
 }
 body {
   font-weight: 300;
-  font-family: 'Source Sans Pro', sans-serif;
-  color:black;
+  color:${(props) => props.theme.white.darker};
+  background-color:black;
   line-height: 1.2;
 }
 a {
@@ -72,14 +72,17 @@ a {
 }
 `;
 
-ReactDOM.render(
+const client = new QueryClient();
+
+root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </RecoilRoot>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <QueryClientProvider client={client}>
+      <RecoilRoot>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
