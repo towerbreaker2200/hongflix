@@ -187,7 +187,6 @@ function Home() {
   const clickedMovie =
     movieMatch?.params.movieId &&
     data?.results.find((movie) => movie.id === +movieMatch.params.movieId!);
-  console.log(clickedMovie);
   return (
     <Wrapper>
       {isLoading ? (
