@@ -53,14 +53,59 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgphoto: string }>`
-  background-color: white;
-  height: 200px;
-  font-size: 24px;
-  background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
-  background-position: center center;
+const Box = styled(motion.div)`
+  background-color: black;
+  height: 170px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
+
+const Poster = styled(motion.img)`
+  width: 100%;
+  object-fit: cover;
+`;
+
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  font-size: 16px;
+`;
+
+const boxVariant = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    height: 210,
+    y: -50,
+    scale: 1.3,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
+
+const infoVariant = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
+  },
+};
 
 const offset = 6;
 
@@ -111,10 +156,22 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
+                      variants={boxVariant}
+                      whileHover="hover"
+                      initial="normal"
+                      transition={{ type: "tween" }}
                       key={movie.id}
-                      bgphoto={makeImagePath(movie.backdrop_path, "w200")}
                     >
-                      {movie.title}
+                      <Poster
+                        src={makeImagePath(
+                          movie.backdrop_path || movie.poster_path,
+                          "w300"
+                        )}
+                        alt={movie.id + ""}
+                      />
+                      <Info variants={infoVariant}>
+                        <h4>{movie.title}</h4>
+                      </Info>
                     </Box>
                   ))}
               </Row>
